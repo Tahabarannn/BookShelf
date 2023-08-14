@@ -1,7 +1,7 @@
 package com.example.BookShelf.dto;
 
 public enum CategoryType {
-    RESEARCH_HISTORY(value: "Araştırma - Tarih"),
+    RESEARCH_HISTORY(value: "Araştırma - Tarih"),;
     SCIENCE(value: "Bilim"),
     COMIC(value: "Çizgi Roman"),
     CHILD_AND_YOUTH(value: "Çocuk ve Gençlik"),
@@ -19,4 +19,14 @@ public enum CategoryType {
     STORY(value: "Hikaye"),
     AUDIO_BOOKS(value: "Sesli Kitap"),
     OTHER(value: "Diğer");
+
+    private final String value;
+
+    CategoryType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }
