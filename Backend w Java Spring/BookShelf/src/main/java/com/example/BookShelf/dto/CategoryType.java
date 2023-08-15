@@ -1,24 +1,23 @@
 package com.example.BookShelf.dto;
 
 public enum CategoryType {
-    RESEARCH_HISTORY(value: "Araştırma - Tarih"),;
-    SCIENCE(value: "Bilim"),
-    COMIC(value: "Çizgi Roman"),
-    CHILD_AND_YOUTH(value: "Çocuk ve Gençlik"),
-    LESSON_TEST_BOOKS(value: "Ders ve Sınav Kitapları"),
-    RELIGION(value: "Din"),
-    NOVEL(value: "Edebiyat"),
-    FANTASY(value: "Fantastik"),
-    FOREIGN_LANGUAGE(value: "Yabancı Dil"),
-    HOBBY(value: "Hobi"),
-    MYTH_LEGEND(value: "Mitoloji - Efsane"),
-    PHILOSOPHY(value: "Felsefe"),
-    ART_DESIGN(value: "Sanat - Tasarım"),
-    HEALTH(value: "Sağlık"),
-    POETRY(value: "Şiir"),
-    STORY(value: "Hikaye"),
-    AUDIO_BOOKS(value: "Sesli Kitap"),
-    OTHER(value: "Diğer");
+    RESEARCH_HISTORY("Arastirma - Tarih"),
+    SCIENCE("Bilim"),
+    COMIC("Çizgi Roman"),
+    CHILD_AND_YOUTH("Çocuk ve Gençlik"),
+    LESSON_TEST_BOOKS("Ders / Sinav Kitaplari"),
+    RELIGION("Din Tasavvuf"),
+    LITERATURE("Edebiyat"),
+    EDUCATION_REFERENCE("Egitim Basvuru"),
+    PHILOSOPHY("Felsefe"),
+    FOREIGN_LANGUAGES("Foreign Languages"),
+    HOBBY("Hobi"),
+    MYTH_LEGEND("Mitoloji Efsane"),
+    HUMOR("Mizah"),
+    PRESTIGE_BOOKS("Prestij Kitaplari"),
+    ART_DESIGN("Sanat - Tasarim"),
+    AUDIO_BOOKS("Sesli Kitaplar"),
+    OTHER("Diğer");
 
     private final String value;
 

@@ -54,4 +54,16 @@ public class BookListService {
                 )
                 .collect(Collectors.toList());
     }
+
+    public List<BookResponse> searchByTitle(String title){
+        return bookRepository.findByTitle(title)
+                .stream()
+                .map(each ->
+                        BookResponse.builder()
+                                .id(each.getId())
+                                .imageUrl(each.getImage().getImageUrl())
+                                .build()
+                )
+                .collect(Collectors.toList());
+    }
 }

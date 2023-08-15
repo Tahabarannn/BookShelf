@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
     List<Book> findByBookStatus(BookStatus bookStatus);
+    List<Book> findByTitle(String title);
 
 }

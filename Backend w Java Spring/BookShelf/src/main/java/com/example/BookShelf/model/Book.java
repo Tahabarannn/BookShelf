@@ -1,21 +1,20 @@
 package com.example.BookShelf.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "book")
 @Getter
 @NoArgsConstructor
-@SuperBuilder
+@Builder
+@AllArgsConstructor
 public class Book extends BaseEntity{
     private String title;
     private String author;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private BookStatus status;
     private String publisher;
     private Integer lastPageNumber;

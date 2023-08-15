@@ -4,6 +4,7 @@ import com.example.BookShelf.dto.BookListItemResponse;
 import com.example.BookShelf.dto.BookResponse;
 import com.example.BookShelf.dto.BookSaveRequest;
 import com.example.BookShelf.dto.CategoryType;
+import com.example.BookShelf.model.BookStatus;
 import com.example.BookShelf.service.BookListService;
 import com.example.BookShelf.service.BookSaveService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,9 @@ public class BookRestController {
                 .body(bookSaveService.saveBook(request));
     }
 
-    @GetMapping
+    @GetMapping(name = "/search")
     public ResponseEntity<List<BookResponse>> listBooks(
-            @RequestParam(name = "size", value = "5") int size, @RequestParam(name = "page", value = "1") int page){
+            @RequestParam(name = "size") int size, @RequestParam(name = "page") int page){
         return ResponseEntity.ok(bookListService.listBooks(size, page));
     }
 
@@ -38,4 +39,16 @@ public class BookRestController {
     public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable CategoryType categoryType){
         return ResponseEntity.ok(bookListService.searchByCategory(categoryType));
     }
+
+    @GetMapping(name = "/list/{status}")
+    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable BookStatus status){
+        return ResponseEntity.ok(bookListService.searchBookStatus(status));
+    }
+
+    @GetMapping(name = "/list/{title}")
+    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable String title){
+        return ResponseEntity.ok(bookListService.searchByTitle(title));
+    }
+
+
 }
