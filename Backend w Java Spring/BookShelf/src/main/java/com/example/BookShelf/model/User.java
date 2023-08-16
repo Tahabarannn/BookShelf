@@ -1,11 +1,17 @@
 package com.example.BookShelf.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class User extends BaseEntity {
 
     @Column(unique = true)
@@ -13,5 +19,4 @@ public class User extends BaseEntity {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private String email;
 }
