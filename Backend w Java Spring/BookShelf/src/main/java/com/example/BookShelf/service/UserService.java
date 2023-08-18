@@ -27,6 +27,14 @@ public class UserService {
                 .build();
     }
 
+    public UserDto getUser(String username){
+        var savedUser = findUserByUsername(username);
+        return UserDto.builder()
+                .username(savedUser.getUsername())
+                .role(savedUser.getRole())
+                .build();
+    }
+
     public User findUserByUsername(String username){
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> GenericException.builder()

@@ -1,5 +1,7 @@
 package com.example.BookShelf.configure;
 
+import Security.JwtAccessDeniedHandler;
+import Security.JwtAuthenticationEntryPoint;
 import Security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,12 +20,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-public class ServiceConfig {
+public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    public ServiceConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(JwtFilter jwtFilter, JwtAccessDeniedHandler jwtAccessDeniedHandler,
+                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.jwtFilter = jwtFilter;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Bean
@@ -42,6 +49,8 @@ public class ServiceConfig {
                 .AnyRequest().authenticated()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .and().build();
