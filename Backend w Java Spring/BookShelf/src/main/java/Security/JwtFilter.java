@@ -22,13 +22,11 @@ import java.util.Map;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final TokenGenerator tokenGenerator;
-    private final UserDetailsService userDetailsService;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public JwtFilter(TokenGenerator tokenGenerator, UserDetailsService userDetailsService, ObjectMapper objectMapper) {
+    private final UserDetailsService userDetailsService;
+    public JwtFilter(TokenGenerator tokenGenerator, UserDetailsService userDetailsService) {
         this.tokenGenerator = tokenGenerator;
         this.userDetailsService = userDetailsService;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -50,6 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }catch (Exception e){
+            ObjectMapper objectMapper = new ObjectMapper();
             response.setContentType("application/json");
             Map<String,String> errors = new HashMap();
             errors.put("error", e.getMessage());

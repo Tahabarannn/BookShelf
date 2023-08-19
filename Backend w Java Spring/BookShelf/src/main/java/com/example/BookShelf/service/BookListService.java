@@ -5,6 +5,7 @@ import com.example.BookShelf.dto.CategoryType;
 import com.example.BookShelf.model.Book;
 import com.example.BookShelf.model.BookStatus;
 import com.example.BookShelf.model.Category;
+import com.example.BookShelf.model.User;
 import com.example.BookShelf.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class BookListService {
     private final CategoryService categoryService;
     private final BookRepository bookRepository;
+    private final AuthService authService;
+    private final UserService userService;
 
     public List<BookResponse> listBooks(int size, int page) {
         return bookRepository.findAll(PageRequest.of(page, size))
@@ -44,6 +47,7 @@ public class BookListService {
     }
 
     public List<BookResponse> searchBookStatus(BookStatus bookStatus){
+        User user = userService.findUserByUsername(authService.getLoggedInUsername());
         return bookRepository.findByBookStatus(bookStatus)
                 .stream()
                 .map(each ->

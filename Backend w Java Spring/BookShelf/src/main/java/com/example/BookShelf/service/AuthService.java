@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +25,10 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
+    public String getLoggedInUsername() {
+        return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    }
+
 
     public TokenResponseDto login(LoginRequest loginRequest) {
         try {
@@ -33,7 +39,10 @@ public class AuthService {
                     .userDto(userService.getUser(loginRequest.getUsername()))
                     .build();
         } catch (Exception e) {
-            throw new GenericException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+            throw GenericException.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .errorMessage("User not found!")
+                    .build();
         }
     }
 }
