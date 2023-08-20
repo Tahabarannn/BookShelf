@@ -1,0 +1,10 @@
+image: maven:3.6.3-jdk-17
+
+pipelines:
+  default:
+    - name: Tests
+      size: 2x
+      caches:
+          - maven
+      script:
+        - mvn test
