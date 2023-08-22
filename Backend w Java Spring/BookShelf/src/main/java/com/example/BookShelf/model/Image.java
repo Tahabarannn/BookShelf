@@ -2,15 +2,13 @@ package com.example.BookShelf.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "image")
+@Table(name = "images")
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

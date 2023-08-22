@@ -1,48 +1,70 @@
 package com.example.BookShelf.service;
 
+import com.example.BookShelf.dto.ErrorCode;
 import com.example.BookShelf.dto.TokenResponseDto;
+import com.example.BookShelf.dto.UserDto;
+import com.example.BookShelf.dto.request.LoginRequest;
+import com.example.BookShelf.dto.request.SignUpRequest;
 import com.example.BookShelf.exception.GenericException;
-import com.example.BookShelf.request.LoginRequest;
-import com.example.BookShelf.utils.TokenGenerator;
+import com.example.BookShelf.model.Role;
+import com.example.BookShelf.model.User;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthService {
+@RequiredArgsConstructor
+public class AuthService{
 
-    private final UserService userService;
-    private final TokenGenerator tokenGenerator;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final TokenService tokenService;
 
-    public AuthService(UserService userService, TokenGenerator tokenGenerator, AuthenticationManager authenticationManager) {
-        this.userService = userService;
-        this.tokenGenerator = tokenGenerator;
-        this.authenticationManager = authenticationManager;
-    }
-
-    public String getLoggedInUsername() {
-        return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-    }
-
+    private final PasswordEncoder encoder;
 
     public TokenResponseDto login(LoginRequest loginRequest) {
         try {
-            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), loginRequest.getPassword()));
-            return TokenResponseDto.builder()
-                    .accessToken(tokenGenerator.generateToken(auth))
-                    .userDto(userService.getUser(loginRequest.getUsername()))
+            Authentication auth = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            return TokenResponseDto
+                    .builder()
+                    .accessToken(tokenService.generateToken(auth))
+                    .userDto(userService.findUser(loginRequest.getUsername()))
                     .build();
-        } catch (Exception e) {
-            throw GenericException.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND)
-                    .errorMessage("User not found!")
-                    .build();
+        } catch (final BadCredentialsException badCredentialsException) {
+            throw GenericException.builder().httpStatus(HttpStatus.NOT_FOUND).errorCode(ErrorCode.USER_NOT_FOUND).errorMessage("Invalid Username or Password").build();
         }
+    }
+
+
+    @Transactional
+    public UserDto signup(SignUpRequest signUpRequest){
+        var isAllReadyRegistered = userService.existsByUsername(signUpRequest.getUsername());
+
+        if(isAllReadyRegistered) {
+            throw GenericException.builder().httpStatus(HttpStatus.FOUND)
+                    .errorMessage("Username" + signUpRequest.getUsername() + "is already used").build();
+        }
+
+        var user = User.builder()
+                .username(signUpRequest.getUsername())
+                .password(encoder.encode(signUpRequest.getPassword()))
+                .role(Role.USER)
+                .build();
+
+        User fromDb = userService.create(user);
+
+        return UserDto.builder()
+                .id(fromDb.getId())
+                .username(fromDb.getUsername())
+                .role(fromDb.getRole())
+                .build();
+
     }
 }

@@ -2,11 +2,13 @@ package com.example.BookShelf.api;
 
 import com.example.BookShelf.dto.BookListItemResponse;
 import com.example.BookShelf.dto.BookResponse;
-import com.example.BookShelf.dto.BookSaveRequest;
 import com.example.BookShelf.dto.CategoryType;
+import com.example.BookShelf.dto.request.SaveBookRequest;
 import com.example.BookShelf.model.BookStatus;
 import com.example.BookShelf.service.BookListService;
 import com.example.BookShelf.service.BookSaveService;
+import com.example.BookShelf.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,34 +23,51 @@ public class BookRestController {
 
     private final BookListService bookListService;
     private final BookSaveService bookSaveService;
+    private final UserService userService;
 
-    @PostMapping(name = "/save")
-    public ResponseEntity<BookListItemResponse> saveBook(@RequestBody BookSaveRequest request){
+
+    @PostMapping("/save")
+    public ResponseEntity<BookListItemResponse> saveBook(@Valid @RequestBody SaveBookRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(bookSaveService.saveBook(request));
     }
 
-    @GetMapping(name = "/search")
-    public ResponseEntity<List<BookResponse>> listBooks(
-            @RequestParam(name = "size") int size, @RequestParam(name = "page") int page){
-        return ResponseEntity.ok(bookListService.listBooks(size, page));
+    @GetMapping("/search")
+    public ResponseEntity<List<BookResponse>> listBook(@RequestParam(name = "size") int size, @RequestParam(name = "page") int page) {
+        final Long userID = userService.findUserInContext().getId();
+        return ResponseEntity.ok(bookListService.listBooks(size, page, userID));
     }
 
-    @GetMapping(name = "/list/{CategoryType}")
-    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable CategoryType categoryType){
-        return ResponseEntity.ok(bookListService.searchByCategory(categoryType));
+
+    @GetMapping("/search/{categoryType}")
+    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable CategoryType categoryType) {
+        final Long userID = userService.findUserInContext().getId();
+        return ResponseEntity.ok(this.bookListService.searchByCategory(categoryType, userID));
     }
 
-    @GetMapping(name = "/list/{status}")
-    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable BookStatus status){
-        return ResponseEntity.ok(bookListService.searchBookStatus(status));
+
+    @GetMapping("/{status}")
+    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable BookStatus status) {
+        final Long userID = userService.findUserInContext().getId();
+        return ResponseEntity.ok(this.bookListService.searchBookStatus(status, userID));
     }
 
-    @GetMapping(name = "/list/{title}")
-    public ResponseEntity<List<BookResponse>> listByCategory(@PathVariable String title){
-        return ResponseEntity.ok(bookListService.searchByTitle(title));
+    @GetMapping("/list/{title}")
+    public ResponseEntity<List<BookResponse>> listByTitle(@PathVariable String title) {
+        return ResponseEntity.ok(this.bookListService.searchByTitle(title));
     }
 
+    @DeleteMapping("/delete/{bookId}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
+        bookSaveService.deleteBook(bookId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/get/{bookId}")
+    public ResponseEntity<BookResponse> searchBook(@PathVariable Long bookId) {
+        return ResponseEntity.ok(bookListService.findBook(bookId));
+    }
 
 }
+

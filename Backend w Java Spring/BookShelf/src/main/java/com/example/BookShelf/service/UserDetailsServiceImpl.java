@@ -2,6 +2,7 @@ package com.example.BookShelf.service;
 
 import com.example.BookShelf.dto.UserDto;
 import com.example.BookShelf.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +13,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     private final UserService userService;
 
     public UserDetailsServiceImpl(UserService userService) {
@@ -23,13 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findUserByUsername(username);
         var roles = Stream.of(user.getRole())
-                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .map(x -> new SimpleGrantedAuthority(x.name()))
                 .collect(Collectors.toList());
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                roles
-        );
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), roles);
     }
 }

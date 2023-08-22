@@ -1,4 +1,4 @@
-package Security;
+package com.example.BookShelf.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,11 +12,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-            throws IOException, ServletException {
+            throws IOException {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getOutputStream().println("\"error\": \""+authException.getMessage()+"\"");
+        response.getOutputStream().println("{ \"error\": \""+authException.getMessage()+"\" }");
 
     }
 }

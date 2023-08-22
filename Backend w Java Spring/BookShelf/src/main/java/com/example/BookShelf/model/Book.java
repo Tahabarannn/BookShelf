@@ -7,8 +7,9 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "book")
 @Getter
+@Setter
 @NoArgsConstructor
-@Builder
+@Builder (toBuilder = true)
 @AllArgsConstructor
 public class Book extends BaseEntity{
     private String title;
@@ -27,4 +28,11 @@ public class Book extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
     private Long userId;
+
+    public Image getImage() {
+        if (image == null) {
+            image = new Image();
+        }
+        return image;
+    }
 }
