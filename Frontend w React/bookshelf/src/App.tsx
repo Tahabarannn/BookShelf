@@ -1,17 +1,17 @@
 import { CssBaseline } from "@mui/material";
-import Auth from "./Pages/auth/auth";
 import { theme } from "./Utils/theme";
-import { ThemeProvider } from "@emotion/react"
+import { ThemeProvider } from "@emotion/react";
+import Landing from "./Pages/Landing/landing";
 
 const App = () => {
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Auth />
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Landing />
+      </ThemeProvider>
     </>
   );
-}
+};
 
 export default App;
