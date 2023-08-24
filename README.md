@@ -2,7 +2,7 @@
 <p align="center">
   <h2 align="center">BookShelf</h2>
   <p align="center">
-    Folksdev'in başlattığı sıfırdan production'a eğitimi ile geliştirdiğimiz bir proje. Mobil uygulama bazlı bir projedir. Flutter il
+    Folksdev'in başlattığı sıfırdan production'a eğitimi ile geliştirdiğimiz bir proje. Mobil uygulama bazlı bir projedir. Flutter ile mobil versiyonunu yazıp, React ile web kısmını yazıp Backend ile Frontend bağlantısını oluşturacağım. Şu an için dummy datalar ile çalışıyorum.
     <br />
     <br />
     <a href="#">Report Bug</a>
@@ -15,12 +15,22 @@
 
 ## Built With
 
-[![C-Sharp](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)](https://docs.microsoft.com/en-us/dotnet/csharp/)
-[![Asp-net](https://img.shields.io/badge/ASP.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/apps/aspnet)
-[![MSSQL](https://img.shields.io/badge/MSSQL-004880?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/en-us/sql-server/sql-server-2019?rtc=2)
-[![Entity-Framework](https://img.shields.io/badge/Entity%20Framework-004880?style=for-the-badge&logo=nuget&logoColor=white)](https://docs.microsoft.com/en-us/ef/)
-[![Autofac](https://img.shields.io/badge/Autofac-004880?style=for-the-badge&logo=nuget&logoColor=white)](https://autofac.org/)
-[![Fluent-Validation](https://img.shields.io/badge/Fluent%20Validation-004880?style=for-the-badge&logo=nuget&logoColor=white)](https://fluentvalidation.net/)
+<h2>BACKEND</h2>
+<ul>
+  <li>Java 17</li>
+  <li>Spring Boot</li>
+  <li>JDBC</li>
+  <li>MySql</li>
+  <li>Aws</li>
+</ul>
+
+<h2>FRONTEND</h2>
+<ul>
+  <li>React</li>
+  <li>ViteJs</li>
+  <li>Material UI</li>
+  <li>React Router DOM</li>
+</ul>
 
 
 ## Layers
