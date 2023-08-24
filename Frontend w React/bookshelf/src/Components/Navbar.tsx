@@ -7,11 +7,16 @@ import Button from "@mui/material/Button";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import { useNavigate } from "react-router-dom";
+import { LANDING_BASE_ROUTES } from "../Pages/Landing";
 
 const pages = [
-  { title: "Listelerim", path: "/lists", icon: "MenuBookIcon" },
-  { title: "Kütüphanem", path: "/library", icon: "BookIcon" },
-  { title: "Taha Baran", path: "/user", icon: "PersonIcon" },
+  { title: "Listelerim", path: "/lists", icon: <MenuBookIcon /> },
+  { title: "Kütüphanem", path: "/library", icon: <InventoryIcon /> },
+  { title: "Taha Baran", path: "/user", icon: <ManageAccountsIcon /> },
 ];
 
 const Search = styled("div")(({ theme }) => ({
@@ -54,6 +59,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -63,10 +70,10 @@ function Navbar() {
           }}
         >
           <Typography
+            onClick={() => navigate(LANDING_BASE_ROUTES.index)}
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -75,6 +82,7 @@ function Navbar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             BookShelf
@@ -90,12 +98,22 @@ function Navbar() {
             />
           </Search>
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
             {pages.map((page) => (
               <Button
                 key={page.title}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: ".5rem",
+                  "&:hover": {
+                    color: "CaptionText",
+                  },
+                }}
               >
+                {page.icon}
                 {page.title}
               </Button>
             ))}

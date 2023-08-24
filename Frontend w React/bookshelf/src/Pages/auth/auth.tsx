@@ -10,10 +10,14 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import LoginAnimation from "../../Lottie/loginAnimation.json";
 import { useState } from "react";
 import { Visibility } from "@mui/icons-material";
+import { LANDING_BASE_ROUTES } from "../Landing";
+import { useNavigate } from "react-router-dom";
 
 const auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -90,7 +94,10 @@ const auth = () => {
               />
             </FormControl>
 
-            <Button variant="contained">
+            <Button
+              onClick={() => navigate(LANDING_BASE_ROUTES.index)}
+              variant="contained"
+            >
               {isLogin ? "Giriş Yap" : "Kayıt Ol"}
             </Button>
             <FormHelperText
